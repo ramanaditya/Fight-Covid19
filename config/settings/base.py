@@ -98,6 +98,8 @@ THIRD_PARTY_APPS = [
     # "allauth.socialaccount.providers.telegram",
     "rest_framework",
     "rest_framework.authtoken",
+    "django.contrib.humanize",
+    "django_celery_beat",
 ]
 
 LOCAL_APPS = [
@@ -305,5 +307,6 @@ REST_FRAMEWORK = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
-COVID19_STATS_API = "https://corona.lmao.ninja/countries"
+COVID19_STATS_API = "https://api.covid19india.org/data.json"

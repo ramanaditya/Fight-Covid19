@@ -1,104 +1,222 @@
-{% extends "base.html" %}
+{% extends "base-uikit.html" %}
+{% load humanize %}
+
+{% block css %}
+  <style>
+    .uk-card-title {
+      font-size: 2rem;
+      line-height: 1.4;
+    }
+  </style>
+{% endblock %}
 
 {% block content %}
 
-  <div class="jumbotron">
-    <h1 class="display-4">Health of India</h1>
-    <p class="lead">Contribute your bit by letting us know about your health condition. This small information can help
-      a lot people and save a lot of resources when fighting against coronavirus. You would be asked a small set of
-      questions to know about your health status.</p>
-    <hr class="my-4">
-    <p>
-      You might be wondering, what's the use of such an application? Here are 6 reason why you should do it:
-    </p>
-    <ol>
-      <li>Find the number of people who have coronavirus like symptoms.</li>
-      <li>Where are these sick people located?</li>
-      <li>Channelize government sanitization effors in places where covid-19/sick patients were found.</li>
-      <li>Which location are these sick people clustered?</li>
-      <li>Health of citizens on a nationwide level</li>
-      <li>Help data scientists forecast the next breakout by generating all this information.</li>
-    </ol>
-    <a class="btn btn-primary btn-lg" href="{% url 'maps:health_form' %}" role="button">Report Health</a>
-    <a class="btn btn-primary btn-lg" href="{% url 'maps:home' %}" role="button">See Map</a>
-  </div>
+  <article class="uk-article uk-margin-top">
 
-  <!-- Covid-19 Status -->
-  <h1>Coronavirus Cases</h1>
-  <div class="row">
-    <div class="col-sm">
-      <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
-        <div class="card-header">Cases</div>
-        <div class="card-body">
-          <h1 class="card-title">{{ cases }}</h1>
+    <h1 class="uk-article-title"><a class="uk-link-reset" href="">Health of India</a></h1>
 
-        </div>
+    <p class="uk-text-lead">Click on <b>Record Health</b> button to sign up and record your health. </p>
+
+    <div class="uk-grid-small uk-child-width-auto" uk-grid>
+      <div>
+        <a href="{% url 'maps:health_form' %}" class="uk-button uk-button-primary">Record Health</a>
+      </div>
+      <div>
+        <a href="{% url 'maps:home' %}" class="uk-button uk-button-secondary">See Maps</a>
+      </div>
+      <div>
+        <a href="{% url 'news:index' %}" class="uk-button uk-button-secondary">News Board</a>
+      </div>
+    </div>
+    <hr>
+
+  </article>
+
+  <ul uk-accordion>
+    <li class="">
+      <a class="uk-accordion-title" href="#">Know more</a>
+      <div class="uk-accordion-content">
+        <p class="uk-article-meta">Written by Health of India team on 4th April 2020.
+        </p>
+
+        <p class="uk-text-lead">Contribute your bit by letting us know about your health condition. This small
+          information
+          can help
+          a lot people and save a lot of resources when fighting against coronavirus. You would be asked a small set of
+          questions to know about your health status.</p>
+
+        <p>
+          You might be wondering, what's the use of such an application? Here are 6 reason why you should do it:
+        </p>
+        <ol>
+          <li>Find the number of people who have coronavirus like symptoms.</li>
+          <li>Where are these sick people located?</li>
+          <li>Channelize government sanitization effors in places where covid-19/sick patients were found.</li>
+          <li>Which location are these sick people clustered?</li>
+          <li>Health of citizens on a nationwide level</li>
+          <li>Help data scientists forecast the next breakout by generating all this information.</li>
+        </ol>
+      </div>
+    </li>
+  </ul>
+
+  <h1>Health of India Stats</h1>
+  <div class="uk-child-width-1-4@s uk-grid-match" uk-grid>
+
+    <div>
+      <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+        <h3 class="uk-card-title">{{ hoi_stats.totalPeople|intcomma }}</h3>
+        <p>Total number of people</p>
       </div>
     </div>
 
-    <div class="col-sm">
-      <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-        <div class="card-header">Today's Cases</div>
-        <div class="card-body">
-          <h1 class="card-title">{{ todayCases }}</h1>
-        </div>
+    <div>
+      <div class="uk-card uk-card-default uk-card-hover uk-card-body ">
+        <h3 class="uk-card-title">{{ hoi_stats.sickPeople|intcomma }}</h3>
+        <p>Total Symptomatic People</p>
       </div>
     </div>
 
-
-    <div class="col-sm">
-      <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-        <div class="card-header">Deaths</div>
-        <div class="card-body">
-          <h1 class="card-title">{{ deaths }}</h1>
-        </div>
+    <div>
+      <div class="uk-card uk-card-default uk-card-hover uk-card-body ">
+        <h3 class="uk-card-title">{{ hoi_stats.shortnessOfBreath|intcomma }}</h3>
+        <p>People with Shortness of Breath</p>
       </div>
     </div>
 
-    <div class="col">
-      <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-        <div class="card-header">Recovered</div>
-        <div class="card-body">
-          <h1 class="card-title">{{ recovered }}</h1>
-        </div>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-        <div class="card-header">Critical</div>
-        <div class="card-body">
-          <h1 class="card-title">{{ critical }}</h1>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <h1>Health Statistics</h1>
-
-  <div class="row justify-content-md-center">
-
-  <div class="col-sm-3">
-      <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-        <div class="card-header">Total People</div>
-        <div class="card-body">
-          <h1 class="card-title">{{ totalPeople }}</h1>
-        </div>
-      </div>
-    </div>
-
-  <div class="col-sm-3">
-      <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-        <div class="card-header">Sick People</div>
-        <div class="card-body">
-          <h1 class="card-title">{{ sickPeople }}</h1>
-        </div>
+    <div>
+      <div class="uk-card uk-card-default uk-card-hover uk-card-body ">
+        <h3 class="uk-card-title">{{ hoi_stats.fever|intcomma }}</h3>
+        <p>People with Fever</p>
       </div>
     </div>
 
   </div>
 
+  <div class="uk-margin">
+    <div class="uk-flex uk-flex-center">
+      <button class="uk-button uk-button-primary" onclick="geoFindMe();">Show patients near me</button>
+    </div>
+    <p id="status"></p>
+    <p id="latitude" style="display: none;"><b>Latitude</b>: </p>
+    <p id="longitude" style="display: none;"><b>Longitude</b>: </p>
+    <p id="infected_patients" style="display: none;"><b>Covid19 Infected Patients</b>: N/A </p>
+    <p id="symptomatic_patients" style="display: none;"><b>Symptomatic Patients</b>: N/A</p>
+    <p>Stats might show N/A sometimes, if the problem persists. Please reach out to us on our Telegram Channel.</p>
+  </div>
+
+  <h1>Coronavirus Stats in India</h1>
+  <div class="uk-child-width-1-4@s uk-grid-match" uk-grid>
+
+    {% if covid19_stats.total_stats.confirmed %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.confirmed|intcomma }}</h3>
+          <p>Total number of cases</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if covid19_stats.total_stats.recovered %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.recovered|intcomma }}</h3>
+          <p>Recovered</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if covid19_stats.total_stats.active %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.active|intcomma }}</h3>
+          <p>Active Cases</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if covid19_stats.total_stats.deaths %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.deaths|intcomma }}</h3>
+          <p>Total death</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if covid19_stats.total_stats.deltaconfirmed %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.deltaconfirmed|intcomma }}</h3>
+          <p>Today's Cases</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if covid19_stats.total_stats.deltarecovered %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.deltarecovered|intcomma }}</h3>
+          <p>Recovered Today</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if covid19_stats.total_stats.deltadeaths %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.deltadeaths|intcomma }}</h3>
+          <p>Today's Death</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if covid19_stats.total_stats.deltaactive %}
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <h3 class="uk-card-title">{{ covid19_stats.total_stats.deltaactive|intcomma }}</h3>
+          <p>Today's Active</p>
+        </div>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <h2>Tests Performed</h2>
+
+  <p>Total samples tested: <b>{{ covid19_stats.tests_performed.totalsamplestested|intcomma }}</b></p>
+  <p>Total positive samples: <b>{{ covid19_stats.tests_performed.totalpositivecases|intcomma }}</b></p>
+
+
+  <h2>Statewise Data</h2>
+
+  <table class="uk-table uk-table-small uk-table-divider">
+    <thead>
+    <tr>
+      <th>State</th>
+      <th>Active</th>
+      <th>Confirmed</th>
+      <th>Recovered</th>
+      <th>Deaths</th>
+      <th>Last Update</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for state, values in covid19_stats.statewise.items %}
+      <tr>
+        <td>{{ state }}</td>
+        <td>{{ values.active }}</td>
+        <td>{{ values.confirmed }}</td>
+        <td>{{ values.recovered }}</td>
+        <td>{{ values.deaths }}</td>
+        <td>{{ values.lastupdatedtime }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="uk-margin-large"></div>
 
   {% comment %}
   2. Guidelines by WHO etc.
@@ -107,4 +225,49 @@
   <br><br>
   {% endcomment %}
 
+  </div>
+
+
+{% endblock %}
+
+
+{% block javascript %}
+  <script>
+    function geoFindMe() {
+
+      const latitude_field = document.querySelector('#latitude');
+      const longitude_field = document.querySelector('#longitude');
+      const infected_patients_field = document.querySelector('#infected_patients');
+      const symptomatic_patients_field = document.querySelector('#symptomatic_patients');
+      const status = document.querySelector('#status');
+
+      function success(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        latitude_field.innerHTML = `<b>Latitude: </b> ${latitude}`;
+        latitude_field.style.display = "block";
+
+        longitude_field.innerHTML = `<b>Longitude: </b> ${longitude}`;
+        longitude_field.style.display = "block";
+
+        infected_patients_field.style.display = "block";
+        symptomatic_patients_field.style.display = "block";
+
+        status.textContent = 'Found your location. Looking for infected and symptomatic patients, nearby.';
+      }
+
+      function error() {
+        status.textContent = 'Unable to retrieve your location';
+      }
+
+      if (!navigator.geolocation) {
+        status.textContent = 'Geolocation is not supported by your browser';
+      } else {
+        status.textContent = 'Locating…';
+        navigator.geolocation.getCurrentPosition(success, error);
+      }
+
+    }
+  </script>
 {% endblock %}
